@@ -6,12 +6,12 @@ namespace gameBase {
 			appStates[i]->update();
 	}
 
-	void StateManager::attachState(AbstractAppState *a){
+	void StateManager::attachAppState(AbstractAppState *a){
 		appStates.push_back(a);
 		a->onAttached();
 	}
 
-	void StateManager::dettachState(AbstractAppState *a){
+	void StateManager::dettachAppState(AbstractAppState *a){
 		int id=-1;
 
 		for(int i = 0; i < appStates.size() && id == -1; i++)
@@ -24,7 +24,7 @@ namespace gameBase {
 		}
 	}
 
-	void StateManager::dettachStateByType(int type){
+	void StateManager::dettachAppStateByType(int type){
 		int id = -1;
 
 		for(int i = 0; i < appStates.size() && id == -1; i++)
@@ -37,7 +37,7 @@ namespace gameBase {
 		}
 	}
 
-	AbstractAppState* StateManager::getStateByType(int type){
+	AbstractAppState* StateManager::getAppStateByType(int type){
 		AbstractAppState *a = nullptr;	
 
 		for(int i = 0; i < appStates.size() && !a; i++)

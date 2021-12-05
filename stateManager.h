@@ -11,12 +11,12 @@ namespace gameBase {
 			StateManager(){}
 			~StateManager(){}
 			void update();
-			void attachState(AbstractAppState *a);
-			void dettachState(AbstractAppState*);
-			void dettachStateByType(int);
-			inline void dettachStateById(int id){appStates.erase(appStates.begin() + id);}
-			inline AbstractAppState* getStateById(int i){return appStates[i];}
-			AbstractAppState* getStateByType(int);
+			void attachAppState(AbstractAppState *a);
+			void dettachAppState(AbstractAppState*);
+			void dettachAppStateByType(int);
+			inline void dettachAppStateById(int id){appStates.erase(appStates.begin() + id);}
+			inline AbstractAppState* getAppStateById(int i){return appStates[i];}
+			AbstractAppState* getAppStateByType(int);
 			inline std::vector<AbstractAppState*> getAppStates(){return appStates;}
 			inline int getNumAppStates(){return appStates.size();}
 		private:
