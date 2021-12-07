@@ -101,9 +101,9 @@ namespace gameBase{
 
 			for(int i = 0; i < 350; i++){
 				if(glfwGetKey(window, i))
-					a->onRawKeyButton(i);
+					a->onRawKeyPress(i);
 				else if(glfwGetMouseButton(window, i))
-					a->onRawMouseButton(i);
+					a->onRawMousePress(i);
 			}
 
 			glfwSetCursorPosCallback(window, foo);
@@ -111,11 +111,11 @@ namespace gameBase{
 			if(glfwJoystickPresent(GLFW_JOYSTICK_1)){
 				for(int i = 0; i < numAxis; i++)
 					if(abs(axis[i]) == 1)
-						a->onRawJoystickAxis(i, axis[i]);
+						a->onRawJoystickMove(i, axis[i]);
 
 				for(int i = 0; i < numButtons; i++)
 					if(buttons[i])
-						a->onRawJoystickButton(i);
+						a->onRawJoystickPress(i);
 			}
 		}
 	}

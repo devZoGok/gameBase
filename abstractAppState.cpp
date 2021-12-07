@@ -20,7 +20,7 @@ namespace gameBase {
 			int trigger = atoi(bindingsLines[i].substr(semicolon + 5, string::npos).c_str());
 
 			Mapping *m = new Mapping;
-			m->bind = (Mapping::Bind)(3 + i);
+			m->bind = 3 + i;
 			m->type = type;
 			m->action = action;
 			m->trigger = trigger;
@@ -30,11 +30,12 @@ namespace gameBase {
 
 	void AbstractAppState::onDettached(){
 		attached = false;
+
+		while(!mappings.empty())
+				mappings.pop_back();
 	}
 
-	void AbstractAppState::update(){}
-
-	void AbstractAppState::removeMapping(Mapping::Bind bind){
+	void AbstractAppState::removeMapping(int bind){
 		int id = -1;
 
 		for(int i = 0; i < mappings.size(); i++)

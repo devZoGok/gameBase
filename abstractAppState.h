@@ -9,7 +9,7 @@
 namespace gameBase {
 	class AbstractAppState{
 		public:
-			virtual void update();
+			virtual void update(){}
 			virtual void onAttached();
 			virtual void onDettached();
 			inline int getType(){return type;}
@@ -17,16 +17,17 @@ namespace gameBase {
 			inline std::vector<Mapping*>& getMappings(){return mappings;}
 			inline int getNumMappings(){return mappings.size();}
 			inline bool isAttached(){return attached;}
-			void removeMapping(Mapping::Bind);
-			virtual void onAction(Mapping::Bind,bool){}
-			virtual void onAnalog(Mapping::Bind,float){}
-			virtual void onRawKeyButton(short){}
-			virtual void onRawMouseButton(short){}
-			virtual void onRawJoystickAxis(short,float){}
-			virtual void onRawJoystickButton(short){}
+			void removeMapping(int);
+			virtual void onAction(int, bool){}
+			virtual void onAnalog(int, float){}
+			virtual void onRawKeyPress(int){}
+			virtual void onRawMousePress(int){}
+			virtual void onRawJoystickMove(int, float){}
+			virtual void onRawJoystickPress(int){}
 		protected:
 			AbstractAppState(){}
 			~AbstractAppState(){}
+
 			std::vector<Mapping*> mappings;
 			std::vector<std::string> bindingsLines;
 			int type;
