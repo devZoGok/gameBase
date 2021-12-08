@@ -9,18 +9,25 @@ namespace gameBase {
 		attached = true;
 
 		for(int i = 0; i < bindingsLines.size(); i++){
-			int semicolon;
+			int semicolon, numFoundCommas = 0;
+			int commaIds[3];
 
-			for(int j = 0; j < bindingsLines[i].length(); j++)	
+			for(int j = 0; j < bindingsLines[i].length(); j++){
 				if(bindingsLines[i].c_str()[j] == ':')
 					semicolon = j;
+				else if(bindingsLines[i].c_str()[j] == ','){
+					commaIds[numFoundCommas] = j;
+					numFoundCommas++;
+				}
+			}
 
-			Mapping::BindType type = (Mapping::BindType)atoi(bindingsLines[i].substr(semicolon + 1, 1).c_str());
-			bool action = atoi(bindingsLines[i].substr(semicolon + 3, 1).c_str());
-			int trigger = atoi(bindingsLines[i].substr(semicolon + 5, string::npos).c_str());
+			int bind = atoi(bindingsLines[i].substr(semicolon + 1, commaIds[0] - semicolon).c_str());
+			Mapping::BindType type = (Mapping::BindType)atoi(bindingsLines[i].substr(commaIds[0] + 1, commaIds[1] - commaIds[0]).c_str());
+			bool action = atoi(bindingsLines[i].substr(commaIds[1] + 1, commaIds[2] - commaIds[1]).c_str());
+			int trigger = atoi(bindingsLines[i].substr(commaIds[2] + 1, string::npos).c_str());
 
 			Mapping *m = new Mapping;
-			m->bind = 3 + i;
+			m->bind = bind;
 			m->type = type;
 			m->action = action;
 			m->trigger = trigger;
