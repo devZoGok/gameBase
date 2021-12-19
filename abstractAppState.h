@@ -21,6 +21,7 @@ namespace gameBase {
 			virtual void onAction(int, bool){}
 			virtual void onAnalog(int, float){}
 			virtual void onRawKeyPress(int){}
+			virtual void onRawCharPress(unsigned int){}
 			virtual void onRawMousePress(int){}
 			virtual void onRawJoystickMove(int, float){}
 			virtual void onRawJoystickPress(int){}

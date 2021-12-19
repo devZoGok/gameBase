@@ -9,13 +9,21 @@
 namespace gameBase{
 	double *posX, *posY, strX, strY;
 	int width, height;
+	StateManager *manager = nullptr;
 	
 	void foo(GLFWwindow *window, double newPosX, double newPosY){
 		strX = (*posX - newPosX) / width, strY = (newPosY - *posY) / height;
 	}
 
-	InputManager::InputManager(StateManager *stateManager, GLFWwindow *window){
-		this->stateManager = stateManager;
+	void charFoo(GLFWwindow *window, unsigned int codepoint){
+			if(manager)
+				for(AbstractAppState *a : manager->getAppStates())
+					a->onRawCharPress(codepoint);
+	}
+
+	InputManager::InputManager(StateManager *sm, GLFWwindow *window){
+		manager = sm;
+		this->stateManager = sm;
 		this->window = window;
 		posX = new double, posY = new double;
 	}
@@ -24,7 +32,6 @@ namespace gameBase{
 
 	void InputManager::update(){
  		glfwGetWindowSize(window, &width, &height);
-
 
 		glfwGetCursorPos(window, posX, posY);
 		int joystick;
@@ -39,10 +46,11 @@ namespace gameBase{
 		}
 
 		for(int j = 0; j < stateManager->getAppStates().size(); j++){
-			AbstractAppState *a = stateManager->getAppStates()[j];
+			glfwSetCharCallback(window, charFoo);
+			AbstractAppState *currentState = stateManager->getAppStates()[j];
 
-			for(int i = 0; i < a->getNumMappings(); i++){
-				Mapping *m = a->getMapping(i);
+			for(int i = 0; i < currentState->getNumMappings(); i++){
+				Mapping *m = currentState->getMapping(i);
 
 				if(m->action){
 					bool pressed;
@@ -63,7 +71,7 @@ namespace gameBase{
 
 					if((pressed && !m->pressed) || (!pressed&&m->pressed)){
 						m->pressed = pressed;	
-						a->onAction(m->bind, pressed);
+						currentState->onAction(m->bind, pressed);
 					}
 				}
 				else{
@@ -82,7 +90,8 @@ namespace gameBase{
 										str = strY;
 										break;
 								}
-								a->onAnalog(m->bind, str);
+
+								currentState->onAnalog(m->bind, str);
 								break;
 							}
 						case Mapping::JOYSTICK_AXIS:
@@ -91,7 +100,7 @@ namespace gameBase{
 								float str = (fabs(axis[axisId]) >= .1 ? axis[axisId] : 0);
 
 								if(fabs(str) > 0)
-									a->onAnalog(m->bind, str);
+									currentState->onAnalog(m->bind, str);
 
 								break;
 							}
@@ -99,23 +108,24 @@ namespace gameBase{
 				}
 			}
 
-			for(int i = 0; i < 350; i++){
+			for(int i = 32; i < 300; i++)
 				if(glfwGetKey(window, i))
-					a->onRawKeyPress(i);
-				else if(glfwGetMouseButton(window, i))
-					a->onRawMousePress(i);
-			}
+					currentState->onRawKeyPress(i);
+
+			for(int i = 0; i < 3; i++)
+				if(glfwGetMouseButton(window, i))
+					currentState->onRawMousePress(i);
 
 			glfwSetCursorPosCallback(window, foo);
 
 			if(glfwJoystickPresent(GLFW_JOYSTICK_1)){
 				for(int i = 0; i < numAxis; i++)
 					if(abs(axis[i]) == 1)
-						a->onRawJoystickMove(i, axis[i]);
+						currentState->onRawJoystickMove(i, axis[i]);
 
 				for(int i = 0; i < numButtons; i++)
 					if(buttons[i])
-						a->onRawJoystickPress(i);
+						currentState->onRawJoystickPress(i);
 			}
 		}
 	}
