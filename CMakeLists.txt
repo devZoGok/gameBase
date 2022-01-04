@@ -7,12 +7,13 @@ cmake_policy(SET CMP0015 NEW)
 set(states abstractAppState.cpp)
 set(core inputManager.cpp mapping.h stateManager.cpp)
 set(util util.cpp)
-set(GLFW_DIR ../vb01/external/glfw)
+set(GLFW_DIR vb01/external/glfw)
 
-include_directories(${GLFW_DIR}/include/GLFW)
+include_directories(../${GLFW_DIR}/include/GLFW)
 
 add_library(gameBase ${states} ${core} ${util})
 
 set(LIB_NAME gameBase)
 
-target_link_directories(${LIB_NAME} PUBLIC ${GLFW_LIB_DIR})
+link_directories(../../build/external/${GLFW_DIR}/src)
+target_link_libraries(${LIB_NAME} PUBLIC glfw)
