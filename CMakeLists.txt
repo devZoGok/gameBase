@@ -7,7 +7,7 @@ cmake_policy(SET CMP0015 NEW)
 set(states abstractAppState.cpp)
 set(core inputManager.cpp mapping.h stateManager.cpp)
 set(util util.cpp)
-set(GLFW_DIR external/glfw)
+set(GLFW_DIR ../vb01/external/glfw)
 
 include_directories(${GLFW_DIR}/include/GLFW)
 
