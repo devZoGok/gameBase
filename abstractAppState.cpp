@@ -38,8 +38,8 @@ namespace gameBase {
 	void AbstractAppState::onDettached(){
 		attached = false;
 
-		while(!mappings.empty())
-				mappings.pop_back();
+		mappings.clear();
+		bindingsLines.clear();
 	}
 
 	void AbstractAppState::removeMapping(int bind){
