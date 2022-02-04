@@ -1,30 +1,33 @@
 #include "abstractAppState.h"
 #include "util.h"
 #include "mapping.h"
-
-using namespace std;
+#include "luaManager.h"
 
 namespace gameBase {
+	using namespace std;
+
+	typedef LuaManager::Index Index;
+
+	AbstractAppState::AbstractAppState(int type, int firstMapping, int numMappings, string optionsFile){
+			this->type = type;
+			this->firstMapping = firstMapping;
+			this->numMappings = numMappings;
+			this->optionsFile = optionsFile;
+	}
+
 	void AbstractAppState::onAttached(){
 		attached = true;
 
-		for(int i = 0; i < bindingsLines.size(); i++){
-			int semicolon, numFoundCommas = 0;
-			int commaIds[3];
+		LuaManager *luaManager = LuaManager::getSingleton();
+		luaManager->buildScript(vector<string>{optionsFile});
+		string table = "mappings";
 
-			for(int j = 0; j < bindingsLines[i].length(); j++){
-				if(bindingsLines[i].c_str()[j] == ':')
-					semicolon = j;
-				else if(bindingsLines[i].c_str()[j] == ','){
-					commaIds[numFoundCommas] = j;
-					numFoundCommas++;
-				}
-			}
-
-			int bind = atoi(bindingsLines[i].substr(semicolon + 1, commaIds[0] - semicolon).c_str());
-			Mapping::BindType type = (Mapping::BindType)atoi(bindingsLines[i].substr(commaIds[0] + 1, commaIds[1] - commaIds[0]).c_str());
-			bool action = atoi(bindingsLines[i].substr(commaIds[1] + 1, commaIds[2] - commaIds[1]).c_str());
-			int trigger = atoi(bindingsLines[i].substr(commaIds[2] + 1, string::npos).c_str());
+		for(int i = firstMapping; i < firstMapping + numMappings; i++){
+			Index idIndex = Index(to_string(i + 1), false);
+			int bind = luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("bind", true)});
+			Mapping::BindType type = (Mapping::BindType)luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("bindType", true)});
+			bool action = luaManager->getBoolFromTable(table, vector<Index>{idIndex, Index("action", true)});
+			int trigger = luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("trigger", true)});
 
 			Mapping *m = new Mapping;
 			m->bind = bind;
@@ -39,7 +42,6 @@ namespace gameBase {
 		attached = false;
 
 		mappings.clear();
-		bindingsLines.clear();
 	}
 
 	void AbstractAppState::removeMapping(int bind){

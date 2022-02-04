@@ -9,6 +9,7 @@
 namespace gameBase {
 	class AbstractAppState{
 		public:
+			AbstractAppState(int, int, int, std::string);
 			virtual void update(){}
 			virtual void onAttached();
 			virtual void onDettached();
@@ -30,8 +31,8 @@ namespace gameBase {
 			~AbstractAppState(){}
 
 			std::vector<Mapping*> mappings;
-			std::vector<std::string> bindingsLines;
-			int type;
+			std::string optionsFile;
+			int type, firstMapping, numMappings;
 			bool attached = false;
 	};
 }
