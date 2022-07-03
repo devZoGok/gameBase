@@ -29,12 +29,15 @@ namespace gameBase{
 						bool getBoolFromTable(std::string, std::vector<Index>);
 						float getFloatFromTable(std::string, std::vector<Index>);
 						std::string getStringFromTable(std::string, std::vector<Index>);
+						std::string getString(std::string);
 				private:
 						LuaManager();
 						void prepareTableForRetrieval(std::string, std::vector<Index>&);
 
 						lua_State *state = nullptr;
 		};
+
+		typedef LuaManager::Index Index;
 }
 
 #endif

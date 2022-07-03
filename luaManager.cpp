@@ -36,6 +36,14 @@ namespace gameBase{
 				return var;
 		}
 
+		string LuaManager::getString(string varName){
+			lua_getglobal(state, varName.c_str());
+			string result = lua_tostring(state, -1);
+			lua_pop(state, 1);
+
+			return result;
+		}
+
 		void LuaManager::prepareTableForRetrieval(string table, vector<Index> &indices){
 				lua_getglobal(state, table.c_str());
 
