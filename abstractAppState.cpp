@@ -23,11 +23,11 @@ namespace gameBase {
 		string table = "mappings";
 
 		for(int i = firstMapping; i < firstMapping + numMappings; i++){
-			Index idIndex = Index(to_string(i + 1), false);
-			int bind = luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("bind", true)});
-			Mapping::BindType type = (Mapping::BindType)luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("bindType", true)});
-			bool action = luaManager->getBoolFromTable(table, vector<Index>{idIndex, Index("action", true)});
-			int trigger = luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("trigger", true)});
+			Index idIndex = Index(i + 1);
+			int bind = luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("bind")});
+			Mapping::BindType type = (Mapping::BindType)luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("bindType")});
+			bool action = luaManager->getBoolFromTable(table, vector<Index>{idIndex, Index("action")});
+			int trigger = luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("trigger")});
 
 			Mapping *m = new Mapping;
 			m->bind = bind;

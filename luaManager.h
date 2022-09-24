@@ -15,9 +15,19 @@ namespace gameBase{
 								std::string index;
 							 	bool string;
 
-								Index(std::string index, bool string){
+								Index(std::string index){
 										this->index = index;
-										this->string = string;
+										this->string = true;
+								}
+
+								Index(int index){
+										this->index = std::to_string(index);
+										this->string = false;
+								}
+
+								Index(float index){
+										this->index = std::to_string(index);
+										this->string = false;
 								}
 						};
 
