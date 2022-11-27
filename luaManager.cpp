@@ -36,6 +36,14 @@ namespace gameBase{
 				return var;
 		}
 
+		float LuaManager::getFloat(string varName){
+				lua_getglobal(state, varName.c_str());
+				int isNum;
+				float var = (int)lua_tonumberx(state, -1, &isNum);
+				lua_pop(state, 1);
+				return var;
+		}
+
 		string LuaManager::getString(string varName){
 			lua_getglobal(state, varName.c_str());
 			string result = lua_tostring(state, -1);

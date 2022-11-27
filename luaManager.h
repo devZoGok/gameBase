@@ -35,6 +35,7 @@ namespace gameBase{
 						inline lua_State* getState(){return state;}
 						void buildScript(std::vector<std::string>);
 						int getInt(std::string);
+						float getFloat(std::string);
 						int getIntFromTable(std::string, std::vector<Index>);
 						bool getBoolFromTable(std::string, std::vector<Index>);
 						float getFloatFromTable(std::string, std::vector<Index>);
