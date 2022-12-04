@@ -19,13 +19,17 @@ namespace gameBase{
 		}
 
 		void LuaManager::buildScript(vector<string> files){
-				string script = "";
+			string script = "";
 
-				for(string f : files)
-						script += "dofile(\"" + f + "\");";
+			for(string f : files)
+					script += "dofile(\"" + f + "\");";
  
-				if(luaL_dostring(state, script.c_str()) && lua_pcall(state, 0, 0, 0))
-						cout << "Error building Lua script\n";
+			executeCode(script, "Error building script(s)\n");
+		}
+
+		void LuaManager::executeCode(string code, string errMsg){
+			if(luaL_dostring(state, code.c_str()) && lua_pcall(state, 0, 0, 0))
+					cout << errMsg;
 		}
 
 		int LuaManager::getInt(string varName){

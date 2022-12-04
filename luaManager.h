@@ -34,6 +34,7 @@ namespace gameBase{
 						static LuaManager* getSingleton();
 						inline lua_State* getState(){return state;}
 						void buildScript(std::vector<std::string>);
+						void executeCode(std::string, std::string = "Error executing code\n");
 						int getInt(std::string);
 						float getFloat(std::string);
 						int getIntFromTable(std::string, std::vector<Index>);
