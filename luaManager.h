@@ -35,16 +35,13 @@ namespace gameBase{
 			inline lua_State* getState(){return state;}
 			void buildScript(std::vector<std::string>);
 			void executeCode(std::string, std::string = "Error executing code\n");
-			int getInt(std::string);
-			float getFloat(std::string);
-			int getIntFromTable(std::string, std::vector<Index>);
-			bool getBoolFromTable(std::string, std::vector<Index>);
-			float getFloatFromTable(std::string, std::vector<Index>);
-			std::string getStringFromTable(std::string, std::vector<Index>);
-			std::string getString(std::string);
+			int getInt(std::vector<Index>);
+			bool getBool(std::vector<Index>);
+			float getFloat(std::vector<Index>);
+			std::string getString(std::vector<Index>);
 		private:
 			LuaManager();
-			void prepareTableForRetrieval(std::string, std::vector<Index>&);
+			void prepareTableForRetrieval(std::vector<Index>&);
 	
 			lua_State *state = nullptr;
 	};

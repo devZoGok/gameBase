@@ -20,14 +20,13 @@ namespace gameBase {
 
 		LuaManager *luaManager = LuaManager::getSingleton();
 		luaManager->buildScript(vector<string>{optionsFile});
-		string table = "mappings";
 
 		for(int i = firstMapping; i < firstMapping + numMappings; i++){
-			Index idIndex = Index(i + 1);
-			int bind = luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("bind")});
-			Mapping::BindType type = (Mapping::BindType)luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("bindType")});
-			bool action = luaManager->getBoolFromTable(table, vector<Index>{idIndex, Index("action")});
-			int trigger = luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("trigger")});
+			Index tableInd = Index("mappings"), idIndex = Index(i + 1);
+			int bind = luaManager->getInt(vector<Index>{tableInd, idIndex, Index("bind")});
+			Mapping::BindType type = (Mapping::BindType)luaManager->getInt(vector<Index>{tableInd, idIndex, Index("bindType")});
+			bool action = luaManager->getBool(vector<Index>{tableInd, idIndex, Index("action")});
+			int trigger = luaManager->getInt(vector<Index>{tableInd, idIndex, Index("trigger")});
 
 			Mapping *m = new Mapping;
 			m->bind = bind;

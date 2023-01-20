@@ -32,37 +32,13 @@ namespace gameBase{
 			cout << errMsg;
 	}
 
-	int LuaManager::getInt(string varName){
-		lua_getglobal(state, varName.c_str());
-		int isNum;
-		int var = (int)lua_tointegerx(state, -1, &isNum);
-		lua_pop(state, 1);
-		return var;
-	}
+	void LuaManager::prepareTableForRetrieval(vector<Index> &indices){
+		lua_getglobal(state, indices[0].index.c_str());
 
-	float LuaManager::getFloat(string varName){
-		lua_getglobal(state, varName.c_str());
-		int isNum;
-		float var = (int)lua_tonumberx(state, -1, &isNum);
-		lua_pop(state, 1);
-		return var;
-	}
+		for(int i = 1; i < indices.size(); i++){
+			if(!lua_istable(state, -1))
+				cout << indices[i].index << " is not in the " << indices[0].index << " table\n";
 
-	string LuaManager::getString(string varName){
-		lua_getglobal(state, varName.c_str());
-		string result = lua_tostring(state, -1);
-		lua_pop(state, 1);
-
-		return result;
-	}
-
-	void LuaManager::prepareTableForRetrieval(string table, vector<Index> &indices){
-		lua_getglobal(state, table.c_str());
-
-		if(!lua_istable(state, -1))
-			cout << table << " is not a table\n";
-
-		for(int i = 0; i < indices.size(); i++){
 			if(indices[i].string)
 				lua_pushstring(state, indices[i].index.c_str());
 			else
@@ -72,40 +48,42 @@ namespace gameBase{
 		}
 	}
 
-	int LuaManager::getIntFromTable(string table, vector<Index> indices){
-		prepareTableForRetrieval(table, indices);
+	int LuaManager::getInt(vector<Index> indices){
+		prepareTableForRetrieval(indices);
 
 		int isNum;
 		int result = lua_tointegerx(state, -1, &isNum);
 
-		lua_pop(state, 1 + indices.size());
+		lua_pop(state, indices.size());
 
 		return result;
 	}
 
-	float LuaManager::getFloatFromTable(string table, vector<Index> indices){
-		prepareTableForRetrieval(table, indices);
+	float LuaManager::getFloat(vector<Index> indices){
+		prepareTableForRetrieval(indices);
 
 		int isNum;
 		float result = lua_tonumberx(state, -1, &isNum);
 
-		lua_pop(state, 1 + indices.size());
+		lua_pop(state, indices.size());
 
 		return result;
 	}
 
-	bool LuaManager::getBoolFromTable(string table, vector<Index> indices){
-		prepareTableForRetrieval(table, indices);
+	bool LuaManager::getBool(vector<Index> indices){
+		prepareTableForRetrieval(indices);
+
 		bool result = lua_toboolean(state, -1);
-		lua_pop(state, 1 + indices.size());
+		lua_pop(state, indices.size());
 
 		return result;
 	}
 
-	string LuaManager::getStringFromTable(string table, vector<Index> indices){
-		prepareTableForRetrieval(table, indices);
+	string LuaManager::getString(vector<Index> indices){
+		prepareTableForRetrieval(indices);
+
 		string result = lua_tostring(state, -1);
-		lua_pop(state, 1 + indices.size());
+		lua_pop(state, indices.size());
 
 		return result;
 	}
