@@ -1,9 +1,11 @@
 #ifndef LUA_MANAGER_H
 #define LUA_MANAGER_H
 
-#include <lua.hpp>
-#include <lauxlib.h>
-#include <lualib.h>
+extern "C"{
+	#include <lua.h>
+	#include <lauxlib.h>
+	#include <lualib.h>
+}
 
 #include <string>
 #include <vector>
