@@ -6,7 +6,7 @@ cmake_policy(SET CMP0015 NEW)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(states abstractAppState.cpp)
-set(core inputManager.cpp mapping.h stateManager.cpp luaManager.cpp)
+set(core inputManager.cpp mapping.h stateManager.cpp)
 set(util util.cpp)
 
 set(LIB_NAME gameBase)
