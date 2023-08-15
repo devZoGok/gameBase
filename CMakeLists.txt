@@ -20,4 +20,9 @@ target_link_directories(${LIB_NAME} PUBLIC ${GLFW_LIB_DIR})
 set(LUA_DIR external/lua-cmake)
 add_subdirectory(${LUA_DIR})
 target_include_directories(${LIB_NAME} PUBLIC ${LUA_DIR}/external/upstream)
+
+set(SOL_DIR external/sol2)
+add_subdirectory(${SOL_DIR})
+target_include_directories(${LIB_NAME} PUBLIC ${SOL_DIR}/include/sol)
+
 target_link_libraries(${LIB_NAME} glfw lua::lib)
