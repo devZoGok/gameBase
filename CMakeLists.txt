@@ -13,7 +13,7 @@ set(LIB_NAME gameBase)
 add_library(${LIB_NAME} STATIC ${states} ${core} ${util})
 
 set(GLFW_DIR external/glfw)
-set(GLFW_LIB_DIR ../vb01/build/external/glfw/src)
+set(GLFW_LIB_DIR build/external/glfw/src)
 target_include_directories(${LIB_NAME} PUBLIC ${GLFW_DIR}/include/GLFW)
 target_link_directories(${LIB_NAME} PUBLIC ${GLFW_LIB_DIR})
 
