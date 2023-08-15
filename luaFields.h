@@ -9,13 +9,13 @@ namespace gameBase{
 		public:
 			std::string name = "";
 		protected:
-			AbstractLuaField();
-			std::string toString();
+			AbstractLuaField(std::string n) : name(n){}
+			virtual std::string toString(){return "";}
 	};
 
 	class LuaTableField : public AbstractLuaField{
 		public:
-			LuaTableField();
+			LuaTableField(std::string name) : AbstractLuaField(name){}
 			std::string toString();
 			AbstractLuaField operator[](std::string);
 		private:
