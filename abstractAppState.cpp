@@ -1,12 +1,10 @@
 #include "abstractAppState.h"
 #include "util.h"
+#include "solUtil.h"
 #include "mapping.h"
-#include "luaManager.h"
 
 namespace gameBase {
 	using namespace std;
-
-	typedef LuaManager::Index Index;
 
 	AbstractAppState::AbstractAppState(int type, int firstMapping, int numMappings, string optionsFile){
 			this->type = type;
@@ -18,22 +16,15 @@ namespace gameBase {
 	void AbstractAppState::onAttached(){
 		attached = true;
 
-		LuaManager *luaManager = LuaManager::getSingleton();
-		luaManager->buildScript(vector<string>{optionsFile});
+		SOL_LUA_STATE.script_file(optionsFile);
 		string table = "mappings";
 
 		for(int i = firstMapping; i < firstMapping + numMappings; i++){
-			Index idIndex = Index(i + 1);
-			int bind = luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("bind")});
-			Mapping::BindType type = (Mapping::BindType)luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("bindType")});
-			bool action = luaManager->getBoolFromTable(table, vector<Index>{idIndex, Index("action")});
-			int trigger = luaManager->getIntFromTable(table, vector<Index>{idIndex, Index("trigger")});
-
 			Mapping *m = new Mapping;
-			m->bind = bind;
-			m->type = type;
-			m->action = action;
-			m->trigger = trigger;
+			m->bind = SOL_LUA_STATE[table][i + 1]["bind"];
+			m->type = (Mapping::BindType)SOL_LUA_STATE[table][i + 1]["bindType"];
+			m->action = SOL_LUA_STATE[table][i + 1]["action"];
+			m->trigger = SOL_LUA_STATE[table][i + 1]["trigger"];
 			mappings.push_back(m);	
 		}
 	}
