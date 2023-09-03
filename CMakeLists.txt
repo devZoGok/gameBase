@@ -7,7 +7,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(states abstractAppState.cpp)
 set(core inputManager.cpp mapping.h stateManager.cpp)
-set(util util.cpp)
+set(util solUtil.cpp util.cpp)
 
 set(LIB_NAME gameBase)
 add_library(${LIB_NAME} STATIC ${states} ${core} ${util})

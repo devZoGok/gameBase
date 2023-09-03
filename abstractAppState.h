@@ -2,9 +2,14 @@
 #define ABSTRACT_APP_STATE_H
 
 #include "mapping.h"
+#include "solUtil.h"
 
 #include <string>
 #include <vector>
+
+namespace sol{
+	class state;
+}
 
 namespace gameBase {
 	class AbstractAppState{

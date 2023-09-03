@@ -1,6 +1,7 @@
+#include <sol/sol.hpp>
+
 #include "abstractAppState.h"
 #include "util.h"
-#include "solUtil.h"
 #include "mapping.h"
 
 namespace gameBase {
@@ -16,6 +17,7 @@ namespace gameBase {
 	void AbstractAppState::onAttached(){
 		attached = true;
 
+		sol::state_view SOL_LUA_STATE = generateView();
 		SOL_LUA_STATE.script_file(optionsFile);
 		string table = "mappings";
 

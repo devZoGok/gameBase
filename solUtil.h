@@ -4,8 +4,14 @@
 
 #include <sol/sol.hpp>
 
+extern "C" {
+	#include <lua.h>
+	#include <lauxlib.h>
+	#include <lualib.h>
+}
+
 namespace gameBase{
-	static sol::state sol, &SOL_LUA_STATE = sol;
+	sol::state_view generateView();
 }
 
 #endif
