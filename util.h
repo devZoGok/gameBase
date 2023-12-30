@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef GAME_BASE_UTIL_H
+#define GAME_BASE_UTIL_H
 
 #include <vector>
 #include <fstream>
