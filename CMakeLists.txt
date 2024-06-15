@@ -10,7 +10,7 @@ set(core inputManager.cpp mapping.h stateManager.cpp)
 set(util solUtil.cpp util.cpp)
 
 set(LIB_NAME gameBase)
-add_library(${LIB_NAME} STATIC ${states} ${core} ${util})
+add_library(${LIB_NAME} ${states} ${core} ${util})
 
 set(GLFW_DIR external/glfw)
 set(GLFW_LIB_DIR build/external/glfw/src)
