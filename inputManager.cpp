@@ -10,6 +10,12 @@ namespace gameBase{
 	double *posX, *posY, strX, strY;
 	int width, height;
 	StateManager *manager = nullptr;
+
+	void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
+		if(manager)
+			for(AbstractAppState *a : manager->getAppStates())
+				a->onRawMouseWheelScroll(yOffset == 1);
+	}
 	
 	void foo(GLFWwindow *window, double newPosX, double newPosY){
 		strX = (*posX - newPosX) / width, strY = (newPosY - *posY) / height;
@@ -117,6 +123,8 @@ namespace gameBase{
 					currentState->onRawMousePress(i);
 
 			glfwSetCursorPosCallback(window, foo);
+
+			glfwSetScrollCallback(window, scroll_callback);
 
 			if(glfwJoystickPresent(GLFW_JOYSTICK_1)){
 				for(int i = 0; i < numAxis; i++)
