@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.5)
 project(gameBase)
 
 set(CMAKE_BUILD_TYPE Debug)
@@ -6,7 +6,7 @@ cmake_policy(SET CMP0015 NEW)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(states abstractAppState.cpp)
-set(core inputManager.cpp mapping.h stateManager.cpp)
+set(core inputManager.cpp mapping.h stateManager.cpp soundManager.cpp)
 set(util solUtil.cpp util.cpp)
 
 set(LIB_NAME gameBase)
@@ -25,4 +25,10 @@ set(SOL_DIR external/sol2)
 add_subdirectory(${SOL_DIR})
 target_include_directories(${LIB_NAME} PUBLIC ${SOL_DIR}/include)
 
-target_link_libraries(${LIB_NAME} glfw lua::lib)
+set(SFML_DIR external/SFML)
+add_subdirectory(${SFML_DIR})
+set(SFML_LIB_DIR build/${SFML_DIR}/src)
+target_include_directories(${LIB_NAME} PUBLIC ${SFML_DIR}/include)
+target_link_directories(${LIB_NAME} PUBLIC ${SFML_LIB_DIR})
+
+target_link_libraries(${LIB_NAME} sfml-system sfml-audio glfw lua::lib)
