@@ -2,6 +2,9 @@
 
 #include <SFML/Audio.hpp>
 
+#include <algorithm>
+#include <random>
+
 namespace gameBase{
 	using namespace std;
 
@@ -74,6 +77,12 @@ namespace gameBase{
 
 		for(string path : playlist)
 			currentPlaylistTracks.push_back(Track(path));
+
+		if(shuffle){
+			random_device rd;
+    		mt19937 g(rd());
+			std::shuffle(currentPlaylistTracks.begin(), currentPlaylistTracks.end(), g);
+		}
 
 		originalPlaylist = playlist;
 		currentTrackId = 0;
