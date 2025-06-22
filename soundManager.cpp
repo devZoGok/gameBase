@@ -20,41 +20,65 @@ namespace gameBase{
 	}
 
 	void SoundManager::update(){
-		if(currentPlaylist[currentTrackId].soundObj->getStatus() == sf::SoundSource::Status::Stopped){
-			bool lastTrack = (currentTrackId == currentPlaylist.size() - 1);
+		if(!currentPlaylistTracks.empty()){
+			sf::SoundSource::Status status = currentPlaylistTracks[currentTrackId].soundObj->getStatus();
 
-			if(lastTrack && loop)
-				currentTrackId = 0;
-			else if(lastTrack && !loop)
-				clearPlaylist();
-			else if(!lastTrack)
-				currentTrackId++;
+			if(status == sf::SoundSource::Status::Stopped){
+				if(getTime() - lastPlayTime < trackDelay) return;
 
-			if(!currentPlaylist.empty()){
-				currentPlaylist[currentTrackId].soundObj->play();
-				currentPlaylist[currentTrackId].soundObj->setLooping(false);
+				bool lastTrack = (currentTrackId == currentPlaylistTracks.size() - 1);
+
+				if(lastTrack && loop)
+					currentTrackId = 0;
+				else if(lastTrack && !loop)
+					clearPlaylist();
+				else if(!lastTrack)
+					currentTrackId++;
+
+				if(!currentPlaylistTracks.empty()){
+					currentPlaylistTracks[currentTrackId].soundObj->play();
+					currentPlaylistTracks[currentTrackId].soundObj->setVolume(volume);
+					currentPlaylistTracks[currentTrackId].soundObj->setLooping(false);
+				}
 			}
+			else if(status == sf::SoundSource::Status::Playing)
+				lastPlayTime = getTime();
 		}
 	}
 
 	void SoundManager::clearPlaylist(){
-		for(Track &track : currentPlaylist)
+		for(Track &track : currentPlaylistTracks)
 			delete track.soundObj;
 		
-		currentPlaylist.clear();
+		currentPlaylistTracks.clear();
 	}
 
-	void SoundManager::play(vector<string> playlist, int volume, bool loop, bool shuffle){
+	void SoundManager::play(vector<string> playlist, int volume, int trackDelay, bool loop, bool shuffle){
+		bool samePlaylist = (playlist.size() == originalPlaylist.size());
+
+		if(samePlaylist)
+			for(int i = 0; i < originalPlaylist.size(); i++)
+				if(originalPlaylist[i] != playlist[i]){
+					samePlaylist = false;
+					break;
+				}
+
+		if(samePlaylist) return;
+
 		this->loop = loop;
 		this->shuffle = shuffle;
+		this->volume = volume;
+		this->trackDelay = trackDelay;
 
 		clearPlaylist();
 
 		for(string path : playlist)
-			currentPlaylist.push_back(Track(path));
+			currentPlaylistTracks.push_back(Track(path));
 
+		originalPlaylist = playlist;
 		currentTrackId = 0;
-		currentPlaylist[currentTrackId].soundObj->play();
-		currentPlaylist[currentTrackId].soundObj->setLooping(false);
+		currentPlaylistTracks[currentTrackId].soundObj->play();
+		currentPlaylistTracks[currentTrackId].soundObj->setVolume(volume);
+		currentPlaylistTracks[currentTrackId].soundObj->setLooping(false);
 	}
 }

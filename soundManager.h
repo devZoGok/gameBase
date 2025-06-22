@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "util.h"
+
 namespace sf{
 	class Music;
 }
@@ -13,7 +15,7 @@ namespace gameBase{
 		public:
 			static SoundManager* getSingleton();
 			void update();
-			void play(std::vector<std::string>, int, bool, bool);
+			void play(std::vector<std::string>, int, int, bool, bool);
 		private:
 			struct Track{
 				std::string path = ""; 
@@ -24,9 +26,11 @@ namespace gameBase{
 			SoundManager(){}
 			void clearPlaylist();
 			
-			int currentTrackId = 0;
+			int currentTrackId = 0, volume, trackDelay;
 			bool loop, shuffle;
-			std::vector<Track> currentPlaylist;
+			s64 lastPlayTime = 0;
+			std::vector<Track> currentPlaylistTracks;
+			std::vector<std::string> originalPlaylist;
 	};
 }
 
