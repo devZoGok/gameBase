@@ -54,6 +54,7 @@ namespace gameBase{
 			delete track.soundObj;
 		
 		currentPlaylistTracks.clear();
+		originalPlaylist.clear();
 	}
 
 	void SoundManager::play(vector<string> playlist, int volume, int trackDelay, bool loop, bool shuffle){

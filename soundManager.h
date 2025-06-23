@@ -16,6 +16,7 @@ namespace gameBase{
 			static SoundManager* getSingleton();
 			void update();
 			void play(std::vector<std::string>, int, int, bool, bool);
+			void clearPlaylist();
 		private:
 			struct Track{
 				std::string path = ""; 
@@ -24,7 +25,6 @@ namespace gameBase{
 				Track(std::string);
 			};
 			SoundManager(){}
-			void clearPlaylist();
 			
 			int currentTrackId = 0, volume, trackDelay;
 			bool loop, shuffle;
