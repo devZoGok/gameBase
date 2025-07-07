@@ -9,4 +9,4 @@
 	url = https://github.com/ThePhD/sol2
 [submodule "external/SFML"]
 	path = external/SFML
-	url = git@github.com:SFML/SFML.git
+	url = https://github.com/sfml/sfml
