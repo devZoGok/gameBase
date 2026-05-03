@@ -1,34 +1,44 @@
 cmake_minimum_required(VERSION 3.5)
-project(gameBase)
+project(Engine)
 
-set(CMAKE_BUILD_TYPE Debug)
-cmake_policy(SET CMP0015 NEW)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(LIB_NAME Engine)
 
-set(states abstractAppState.cpp)
-set(core inputManager.cpp mapping.h stateManager.cpp soundManager.cpp)
-set(util solUtil.cpp util.cpp)
+set(CORE_SRC
+    Source/Core/Private/util.cpp)
 
-set(LIB_NAME gameBase)
-add_library(${LIB_NAME} ${states} ${core} ${util})
+set(SYSTEMS_SRC
+    Source/Systems/Private/abstractAppState.cpp
+    Source/Systems/Private/stateManager.cpp
+    Source/Systems/Private/soundManager.cpp)
 
-set(GLFW_DIR external/glfw)
-set(GLFW_LIB_DIR build/external/glfw/src)
-target_include_directories(${LIB_NAME} PUBLIC ${GLFW_DIR}/include/GLFW)
-target_link_directories(${LIB_NAME} PUBLIC ${GLFW_LIB_DIR})
+set(PLATFORM_SRC
+    Source/Platform/Private/inputManager.cpp)
 
-set(LUA_DIR external/lua-cmake)
-add_subdirectory(${LUA_DIR})
-target_include_directories(${LIB_NAME} PUBLIC ${LUA_DIR}/external/upstream)
+set(SCRIPTING_SRC
+    Source/Scripting/Private/solUtil.cpp)
 
-set(SOL_DIR external/sol2)
-add_subdirectory(${SOL_DIR})
-target_include_directories(${LIB_NAME} PUBLIC ${SOL_DIR}/include)
+set(ENGINE_SRC ${CORE_SRC} ${SYSTEMS_SRC} ${PLATFORM_SRC} ${SCRIPTING_SRC})
 
-set(SFML_DIR external/SFML)
-add_subdirectory(${SFML_DIR})
-set(SFML_LIB_DIR build/${SFML_DIR}/src)
-target_include_directories(${LIB_NAME} PUBLIC ${SFML_DIR}/include)
-target_link_directories(${LIB_NAME} PUBLIC ${SFML_LIB_DIR})
+add_library(${LIB_NAME} ${ENGINE_SRC})
 
-target_link_libraries(${LIB_NAME} sfml-system sfml-audio glfw lua::lib)
+target_include_directories(${LIB_NAME} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Core/Public
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Systems/Public
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Platform/Public
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Scripting/Public)
+
+set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/ThirdParty)
+
+target_include_directories(${LIB_NAME} PUBLIC ${THIRDPARTY_DIR}/GLFW/include)
+target_link_libraries(${LIB_NAME} PUBLIC glfw)
+
+target_include_directories(${LIB_NAME} PUBLIC
+    ${THIRDPARTY_DIR}/Lua/upstream)
+target_link_libraries(${LIB_NAME} PUBLIC lua::lib)
+
+target_include_directories(${LIB_NAME} PUBLIC
+    ${THIRDPARTY_DIR}/sol2/include)
+
+target_include_directories(${LIB_NAME} PUBLIC
+    ${THIRDPARTY_DIR}/SFML/include)
+target_link_libraries(${LIB_NAME} PUBLIC sfml-system sfml-audio)
