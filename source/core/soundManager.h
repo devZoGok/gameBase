@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "util.h"
+#include "../utils/util.h"
 
 namespace sf{
 	class Music;

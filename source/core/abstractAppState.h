@@ -2,7 +2,7 @@
 #define ABSTRACT_APP_STATE_H
 
 #include "mapping.h"
-#include "solUtil.h"
+#include "../utils/solUtil.h"
 
 #include <string>
 #include <vector>
