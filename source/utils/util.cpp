@@ -1,9 +1,9 @@
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 
 #include "util.h"
-#include "mapping.h"
-#include "stateManager.h"
-#include "abstractAppState.h"
+#include "../core/mapping.h"
+#include "../core/stateManager.h"
+#include "../core/abstractAppState.h"
 
 using namespace std;
 using namespace chrono;

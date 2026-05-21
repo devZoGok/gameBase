@@ -1,8 +1,8 @@
 #include "inputManager.h"
 #include "stateManager.h"
-#include "util.h"
+#include "../utils/util.h"
 
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 #include <cmath>
 #include <iostream>
 

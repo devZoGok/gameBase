@@ -5,12 +5,18 @@ set(CMAKE_BUILD_TYPE Debug)
 cmake_policy(SET CMP0015 NEW)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-set(states abstractAppState.cpp)
-set(core inputManager.cpp mapping.h stateManager.cpp soundManager.cpp)
-set(util solUtil.cpp util.cpp)
+set(CORE_SRC
+    source/core/abstractAppState.cpp
+    source/core/stateManager.cpp
+    source/core/inputManager.cpp
+    source/core/soundManager.cpp)
+
+set(UTILS_SRC
+	source/utils/solUtil.cpp
+    source/utils/util.cpp)
 
 set(LIB_NAME gameBase)
-add_library(${LIB_NAME} ${states} ${core} ${util})
+add_library(${LIB_NAME} ${CORE_SRC} ${UTILS_SRC})
 
 set(GLFW_DIR external/glfw)
 set(GLFW_LIB_DIR build/external/glfw/src)

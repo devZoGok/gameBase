@@ -1,7 +1,7 @@
 #include <sol/sol.hpp>
 
 #include "abstractAppState.h"
-#include "util.h"
+#include "../utils/util.h"
 #include "mapping.h"
 
 namespace gameBase {
