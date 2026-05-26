@@ -7,8 +7,9 @@
 #include <iostream>
 
 namespace gameBase{
-	double *posX, *posY, strX, strY;
+	double *posX, *posY, compPosX = -1, compPosY = -1, strX, strY;
 	int width, height;
+	s64 lastMoveTime = 0;
 	StateManager *manager = nullptr;
 
 	void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
@@ -18,7 +19,10 @@ namespace gameBase{
 	}
 	
 	void foo(GLFWwindow *window, double newPosX, double newPosY){
-		strX = (*posX - newPosX) / width, strY = (newPosY - *posY) / height;
+		if(compPosX == -1) compPosX = *posX, compPosY = *posY;
+
+		strX = (compPosX - newPosX) / width, strY = (newPosY - compPosY) / height;
+		lastMoveTime = getTime();
 	}
 
 	void charFoo(GLFWwindow *window, unsigned int codepoint){
@@ -44,6 +48,9 @@ namespace gameBase{
 		int numAxis = 3, numButtons = 6;
 		const u8 *buttons;
 		const float *axis;
+
+		if(getTime() - lastMoveTime > 10)
+			compPosX = -1, compPosY = -1;
 
 		if(glfwJoystickPresent(GLFW_JOYSTICK_1)){
 			joystick = GLFW_JOYSTICK_1;
